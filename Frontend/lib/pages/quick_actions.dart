@@ -11,17 +11,17 @@ class QuickActions extends StatefulWidget {
 }
 
 class _QuickActionsState extends State<QuickActions> {
-  bool showWardens = false; // 🔹 track dropdown expand/collapse
+  bool showWardens = false; 
 
-  // 🔹 Reusable Emergency Card Function
+  //  Reusable Emergency Card Function
   Widget buildEmergencyCard({
     required IconData icon,
     required Color iconColor,
     required Color iconBgColor,
     required String title,
-    String? tag, // optional
+    String? tag, 
     required String subtitle,
-    String? personName, // optional (for Head Guard etc.)
+    String? personName, 
     required String callText,
     required Color buttonColor,
     VoidCallback? onCall,
@@ -37,7 +37,7 @@ class _QuickActionsState extends State<QuickActions> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🔹 Left Icon Box
+                // Left Icon Box
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -49,11 +49,11 @@ class _QuickActionsState extends State<QuickActions> {
 
                 const SizedBox(width: 12),
 
-                // 🔹 Expanded column for text and button
+                // Expanded column for text and button
                 Expanded(
                   child: Column(
                     crossAxisAlignment:
-                        CrossAxisAlignment.start, // 🔹 important!
+                        CrossAxisAlignment.start, 
                     children: [
                       Row(
                         children: [
@@ -133,7 +133,7 @@ class _QuickActionsState extends State<QuickActions> {
     );
   }
 
-  // 🔹 Reusable Contact Card for Wardens
+  // Reusable Contact Card for Wardens
   Widget buildContactCard({
     required String name,
     required String post,
@@ -261,13 +261,13 @@ class _QuickActionsState extends State<QuickActions> {
                       ),
                       const SizedBox(height: 12),
                               
-                      // 🔹 Ambulance Card
+                      // Ambulance Card
                       buildEmergencyCard(
                         icon: Icons.favorite_border,
                         iconColor: Colors.white,
                         iconBgColor: Colors.red,
                         title: "Ambulance",
-                        tag: "URGENT", // will show badge
+                        tag: "URGENT", 
                         subtitle: "Emergency medical services",
                         callText: "Call 108",
                         buttonColor: Colors.red,
@@ -277,7 +277,7 @@ class _QuickActionsState extends State<QuickActions> {
                           try {
                             if (!await launchUrl(
                               dialUri,
-                              mode: LaunchMode.externalApplication, // 👈 important for iOS
+                              mode: LaunchMode.externalApplication, 
                             )) {
                               throw Exception('Could not launch dialer');
                             }
@@ -292,7 +292,7 @@ class _QuickActionsState extends State<QuickActions> {
                               
                       const SizedBox(height: 16),
                               
-                      // 🔹 Head Guard Card
+                      // Head Guard Card
                       buildEmergencyCard(
                         icon: Icons.shield_outlined,
                         iconColor: Colors.white,
@@ -303,19 +303,19 @@ class _QuickActionsState extends State<QuickActions> {
                         callText: "Call +91 9876543201",
                         buttonColor: Colors.blue,
                         onCall: () {
-                          // Add Head Guard call logic
+                          
                         },
                       ),
                               
                       const SizedBox(height: 16),
                               
-                      // 🔹 Fire Service Card
+                      // Fire Service Card
                       buildEmergencyCard(
                         icon: Icons.local_police_outlined,
                         iconColor: Colors.white,
                         iconBgColor: Colors.orange,
                         title: "Fire Service",
-                        tag: "ALERT", // optional badge
+                        tag: "ALERT",
                         subtitle: "Campus fire emergency team",
                         callText: "Call 101",
                         buttonColor: Colors.orange,
@@ -325,7 +325,7 @@ class _QuickActionsState extends State<QuickActions> {
                           try {
                             if (!await launchUrl(
                               dialUri,
-                              mode: LaunchMode.externalApplication, // 👈 important for iOS
+                              mode: LaunchMode.externalApplication, 
                             )) {
                               throw Exception('Could not launch dialer');
                             }
@@ -340,7 +340,7 @@ class _QuickActionsState extends State<QuickActions> {
                               
                       const SizedBox(height: 16),
                               
-                      // 🔹 Wardens Card with Dropdown
+                      // Wardens Card with Dropdown
                       Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -404,7 +404,7 @@ class _QuickActionsState extends State<QuickActions> {
                                 ),
                               ),
                               
-                              // 🔹 Dropdown Button
+                              // Dropdown Button
                               IconButton(
                                 icon: Icon(
                                   showWardens
@@ -423,7 +423,7 @@ class _QuickActionsState extends State<QuickActions> {
                         ),
                       ),
                               
-                      // 🔹 Contact cards shown when dropdown is expanded
+                      // Contact cards shown when dropdown is expanded
                       if (showWardens)
                         Column(
                           children: [
@@ -467,7 +467,7 @@ class _QuickActionsState extends State<QuickActions> {
                               
                       const SizedBox(height: 16),
                               
-                      // 🔹 Instructions Box
+                      // Instructions Box
                       Container(
                         margin: const EdgeInsets.only(top: 15),
                         padding: const EdgeInsets.only(
