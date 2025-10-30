@@ -46,7 +46,7 @@ class _ContactDirectoryState extends State<ContactDirectory> {
       
       setState(() {
         isAdmin = adminStatus;
-        print('Set isAdmin state to: $isAdmin'); // Debug print
+        print('Set isAdmin state to: $isAdmin'); 
       });
       
       await fetchContacts();
@@ -57,7 +57,7 @@ class _ContactDirectoryState extends State<ContactDirectory> {
 
   Future<void> fetchContacts() async {
     try {
-      print('Fetching contacts... Admin status: $isAdmin'); // Debug print
+      print('Fetching contacts... Admin status: $isAdmin'); 
       String baseUrl = Platform.isAndroid ? "http://10.0.2.2:3000" : "http://localhost:3000";
       final token = await getToken();
       print('Token: $token'); // Debug print
