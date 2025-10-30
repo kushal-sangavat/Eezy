@@ -40,16 +40,16 @@ class _HomeState extends State<Home> {
       backgroundColor: const Color.fromARGB(249, 255, 255, 255),
       body: Column(
         children: [
-          // ✅ Header stays fixed
+          // Header stays fixed
           Header(),
 
-          // ✅ Everything else scrolls
+          // Everything else scrolls
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  // ✅ Welcome Card
+                  // Welcome Card
                   ConstrainedBox(
                     constraints: const BoxConstraints(minHeight: 300.0),
                     child: Container(
@@ -145,7 +145,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
-                  // ✅ Stats Grid
+                  // Stats Grid
                   GridView.count(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 30, bottom: 30),
@@ -163,7 +163,7 @@ class _HomeState extends State<Home> {
                     ],
                   ),
 
-                  // ✅ Services
+                  // Services
                   ServiceBloc(
                     title: 'Contact Directory',
                     description: 'Faculty, staff, and service contact',
@@ -249,7 +249,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // ✅ Helper Widgets
+  // Helper Widgets
   Widget _buildStatCard(String value, String label) {
     return Container(
       decoration: BoxDecoration(
