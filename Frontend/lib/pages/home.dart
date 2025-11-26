@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:jklu_eezy/apicall/auth_utils.dart';
+import 'package:jklu_eezy/components/header/header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../components/header/header.dart';
-import '../components/user_components/home/service_bloc.dart';
-// import 'package:jklu_eezy/apicall/auth_utils.dart';
-// import 'package:jklu_eezy/components/header/header.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:jklu_eezy/components/service_bloc.dart';
-// import 'package:jklu_eezy/pages/announcements.dart';
-// import 'package:jklu_eezy/pages/contact_directory.dart';
-// import 'package:jklu_eezy/pages/quick_actions.dart';
-// import '../apicall/userdetails.dart';
+import 'package:jklu_eezy/components/home/service_bloc.dart';
+import 'package:jklu_eezy/pages/LostNFound.dart';
+import 'package:jklu_eezy/pages/announcements.dart';
+import 'package:jklu_eezy/pages/contact_directory.dart';
+import 'package:jklu_eezy/pages/mess.dart';
+import 'package:jklu_eezy/pages/quick_actions.dart';
+import 'package:jklu_eezy/pages/time_table1.dart';
+import '../apicall/userdetails.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,32 +24,32 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // _loadUserData();
+    _loadUserData();
   }
 
-  // Future<void> _loadUserData() async {
-  //   await UserService.instance.loadUser(); // 👈 fetch user details
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
-  // final userRole = UserService.instance.role;
+  Future<void> _loadUserData() async {
+    await UserService.instance.loadUser(); // 👈 fetch user details
+    setState(() {
+      isLoading = false;
+    });
+  }
+  final userRole = UserService.instance.role;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(249, 255, 255, 255),
       body: Column(
         children: [
-          // Header stays fixed
+          // ✅ Header stays fixed
           Header(),
 
-          // Everything else scrolls
+          // ✅ Everything else scrolls
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  // Welcome Card
+                  // ✅ Welcome Card
                   ConstrainedBox(
                     constraints: const BoxConstraints(minHeight: 300.0),
                     child: Container(
@@ -145,7 +145,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
-                  // Stats Grid
+                  // ✅ Stats Grid
                   GridView.count(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 30, bottom: 30),
@@ -163,21 +163,19 @@ class _HomeState extends State<Home> {
                     ],
                   ),
 
-                  // Services
+                  // ✅ Services
                   ServiceBloc(
                     title: 'Contact Directory',
                     description: 'Faculty, staff, and service contact',
                     icon: Icons.contacts_outlined,
                     onTap: () async{
-                      // bool isAdmin = await checkAdminStatus();
-                      // Navigator.push(
-                      //   context,
-                      //   // MaterialPageRoute(builder: (context) => ContactDirectory(isAdmin: isAdmin)),
-                      // );
+                      bool isAdmin = await checkAdminStatus();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ContactDirectory(isAdmin: isAdmin)),
+                      );
                     },
                   ),
-
-
                   ServiceBloc(
                     title: 'Announcements',
                     description: "Latest news and updates",
@@ -191,37 +189,57 @@ class _HomeState extends State<Home> {
                     //     MaterialPageRoute(builder: (_) => pageToOpen),
                     //   );
                     // },
-                    // onTap: () async{
-                    //   bool isAdmin = await checkAdminStatus();
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => Announcements(isAdmin: isAdmin)),
-                    //   );
-                    // },
+                    onTap: () async{
+                      bool isAdmin = await checkAdminStatus();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Announcements(isAdmin: isAdmin)),
+                      );
+                    },
                   ),
                   ServiceBloc(
                     title: "Mess Management",
                     description: "Menu, timings, and meal tickets",
                     icon: Icons.restaurant_menu_outlined,
-                    // onTap: () {
-                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => const ()),);
-                    // },
+                    onTap: () async{
+                      bool isAdmin = await checkAdminStatus();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MessManagementPage(isAdmin: isAdmin)),);
+                    },
                   ),
-
                   ServiceBloc(
                     title: "Study Materials",
                     description: "Papers, e-books, and resources",
                     icon: Icons.menu_book_outlined,
                   ),
+                  // ServiceBloc(
+                  //   title: "Lost & Found",
+                  //   description: "Report and recover items",
+                  //   icon: Icons.search,
+                  // ),
+
                   ServiceBloc(
                     title: "Lost & Found",
                     description: "Report and recover items",
                     icon: Icons.search,
+                    onTap: () async{
+                      bool isAdmin = await checkAdminStatus();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Lostnfound(isAdmin: isAdmin)),
+                      );
+                    },
                   ),
                   ServiceBloc(
                     title: "Class Timetable",
                     description: "Your academic schedule",
                     icon: Icons.calendar_month_outlined,
+                    onTap: () async{
+                      bool isAdmin = await checkAdminStatus();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TimeTable1(isAdmin: isAdmin)),
+                      );
+                    },
                   ),
                   ServiceBloc(
                     title: "Bus Routes",
@@ -232,13 +250,29 @@ class _HomeState extends State<Home> {
                     // },
                   ),
                   ServiceBloc(
+                    title: "Landry",
+                    description: "get notified when clothes are ready",
+                    icon: Icons.local_laundry_service_outlined,
+                    // onTap: () {
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => const ()),);
+                    // },
+                  ),
+                  ServiceBloc(
+                    title: "Complaints",
+                    description: "Lodge complaints regarding campus issues",
+                    icon: Icons.report_problem_outlined,
+                    // onTap: () {
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => const ()),);
+                    // },
+                  ),
+                  ServiceBloc(
                     title: "Quick Actions",
                     description: "Emergency contacts & services",
                     icon: Icons.notifications_outlined,
                     gradiant: true,
-                    // onTap: () {
-                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => const QuickActions()),);
-                    // },
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const QuickActions()),);
+                    },
                   ),
                 ],
               ),
@@ -249,7 +283,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Helper Widgets
+  // ✅ Helper Widgets
   Widget _buildStatCard(String value, String label) {
     return Container(
       decoration: BoxDecoration(

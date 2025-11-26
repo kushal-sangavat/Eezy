@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jklu_eezy/components/header/header.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:jklu_eezy/components/user_components/quick_action/block.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
+import '../components/user_components/quick_action/EmergencyCard.dart';
 
 
 class QuickActions extends StatefulWidget {
@@ -11,181 +13,10 @@ class QuickActions extends StatefulWidget {
 }
 
 class _QuickActionsState extends State<QuickActions> {
-  bool showWardens = false; 
-
-  //  Reusable Emergency Card Function
-  Widget buildEmergencyCard({
-    required IconData icon,
-    required Color iconColor,
-    required Color iconBgColor,
-    required String title,
-    String? tag, 
-    required String subtitle,
-    String? personName, 
-    required String callText,
-    required Color buttonColor,
-    VoidCallback? onCall,
-  }) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left Icon Box
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: iconBgColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, color: iconColor, size: 28),
-                ),
-
-                const SizedBox(width: 12),
-
-                // Expanded column for text and button
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, 
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          if (tag != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                tag,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        subtitle,
-                        style: const TextStyle(color: Colors.black54),
-                      ),
-                      if (personName != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          personName,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                      const SizedBox(height: 4),
-                      const Row(
-                        children: [
-                          Icon(Icons.access_time, size: 16),
-                          SizedBox(width: 4),
-                          Text("24/7"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: buttonColor,
-                minimumSize: const Size(double.infinity, 45),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: onCall,
-              icon: const Icon(Icons.phone, color: Colors.white),
-              label: Text(
-                callText,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  bool showWardens = false; // 🔹 track dropdown expand/collapse
 
   // Reusable Contact Card for Wardens
-  Widget buildContactCard({
-    required String name,
-    required String post,
-    required String location,
-    required String availability,
-    required VoidCallback onCall,
-  }) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            const Icon(Icons.person, size: 40, color: Colors.green),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(post, style: const TextStyle(color: Colors.black54)),
-                  Text(location, style: const TextStyle(color: Colors.black54)),
-                  Text(
-                    availability,
-                    style: const TextStyle(color: Colors.green),
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: onCall,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(249, 255, 255, 255),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text("Call"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -261,13 +92,13 @@ class _QuickActionsState extends State<QuickActions> {
                       ),
                       const SizedBox(height: 12),
                               
-                      // Ambulance Card
+                      // 🔹 Ambulance Card
                       buildEmergencyCard(
                         icon: Icons.favorite_border,
                         iconColor: Colors.white,
                         iconBgColor: Colors.red,
                         title: "Ambulance",
-                        tag: "URGENT", 
+                        tag: "URGENT", // will show badge
                         subtitle: "Emergency medical services",
                         callText: "Call 108",
                         buttonColor: Colors.red,
@@ -275,9 +106,9 @@ class _QuickActionsState extends State<QuickActions> {
                           final Uri dialUri = Uri.parse('tel:108');
 
                           try {
-                            if (!await launchUrl(
+                            if (!await url_launcher.launchUrl(
                               dialUri,
-                              mode: LaunchMode.externalApplication, 
+                              mode: url_launcher.LaunchMode.externalApplication, // 👈 important for iOS
                             )) {
                               throw Exception('Could not launch dialer');
                             }
@@ -293,29 +124,36 @@ class _QuickActionsState extends State<QuickActions> {
                       const SizedBox(height: 16),
                               
                       // Head Guard Card
-                      buildEmergencyCard(
-                        icon: Icons.shield_outlined,
-                        iconColor: Colors.white,
-                        iconBgColor: Colors.blue,
-                        title: "Head Guard",
-                        subtitle: "Campus security head",
-                        personName: "Mr. Rajesh Singh",
-                        callText: "Call +91 9876543201",
-                        buttonColor: Colors.blue,
-                        onCall: () {
-                          
-                        },
+                      // buildEmergencyCard(
+                      //   icon: Icons.shield_outlined,
+                      //   iconColor: Colors.white,
+                      //   iconBgColor: Colors.blue,
+                      //   title: "Head Guard",
+                      //   subtitle: "Campus security head",
+                      //   personName: "Mr. Rajesh Singh",
+                      //   callText: "Call +91 9876543201",
+                      //   buttonColor: Colors.blue,
+                      //   onCall: () {
+                      //     // Add Head Guard call logic
+                      //   },
+                      // ),
+
+                      buildRoleCard(
+                        "Head Guard",
+                        "Campus security head",
+                        Icons.shield_outlined,
+                        Colors.blue,
                       ),
                               
                       const SizedBox(height: 16),
                               
-                      // Fire Service Card
+                      // 🔹 Fire Service Card
                       buildEmergencyCard(
                         icon: Icons.local_police_outlined,
                         iconColor: Colors.white,
                         iconBgColor: Colors.orange,
                         title: "Fire Service",
-                        tag: "ALERT",
+                        tag: "ALERT", // optional badge
                         subtitle: "Campus fire emergency team",
                         callText: "Call 101",
                         buttonColor: Colors.orange,
@@ -323,9 +161,9 @@ class _QuickActionsState extends State<QuickActions> {
                           final Uri dialUri = Uri.parse('tel:101');
 
                           try {
-                            if (!await launchUrl(
+                            if (!await url_launcher.launchUrl(
                               dialUri,
-                              mode: LaunchMode.externalApplication, 
+                              mode: url_launcher.LaunchMode.externalApplication, // 👈 important for iOS
                             )) {
                               throw Exception('Could not launch dialer');
                             }
@@ -340,7 +178,7 @@ class _QuickActionsState extends State<QuickActions> {
                               
                       const SizedBox(height: 16),
                               
-                      // Wardens Card with Dropdown
+                      // 🔹 Wardens Card with Dropdown
                       Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
@@ -395,7 +233,7 @@ class _QuickActionsState extends State<QuickActions> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Text(
-                                  "5 Available",
+                                  "4 Available",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -404,7 +242,7 @@ class _QuickActionsState extends State<QuickActions> {
                                 ),
                               ),
                               
-                              // Dropdown Button
+                              // 🔹 Dropdown Button
                               IconButton(
                                 icon: Icon(
                                   showWardens
@@ -423,51 +261,59 @@ class _QuickActionsState extends State<QuickActions> {
                         ),
                       ),
                               
-                      // Contact cards shown when dropdown is expanded
+                      // 🔹 Contact cards shown when dropdown is expanded
                       if (showWardens)
                         Column(
                           children: [
-                            buildContactCard(
-                              name: "John Doe",
-                              post: "Warden",
+                            buildWardenCard(
+                              position: "BH1 Boys Warden",
                               location: "Block A",
                               availability: "24/7 Available",
-                              onCall: () {},
                             ),
-                            buildContactCard(
-                              name: "Jane Smith",
-                              post: "Assistant Warden",
-                              location: "Block B",
-                              availability: "24/7 Available",
-                              onCall: () {},
-                            ),
-                            buildContactCard(
-                              name: "David Kumar",
-                              post: "Warden",
-                              location: "Block C",
-                              availability: "Day Shift",
-                              onCall: () {},
-                            ),
-                            buildContactCard(
-                              name: "Priya Sharma",
-                              post: "Deputy Warden",
-                              location: "Block D",
-                              availability: "Night Shift",
-                              onCall: () {},
-                            ),
-                            buildContactCard(
-                              name: "Arjun Mehta",
-                              post: "Senior Warden",
-                              location: "Block E",
-                              availability: "24/7 Available",
-                              onCall: () {},
-                            ),
+
+                            buildWardenCard(position: 'BH2 Boys Warden', location: 'Block B', availability: 'Day Shift',),
+                            buildWardenCard(position: 'GH1 Girls Warden', location: 'Block C', availability: 'Night Shift',),
+                            buildWardenCard(position: 'GH2 Girls Warden', location: 'Block D', availability: '24/7 Available',),
+
+
+
+
+
+
+                            // buildContactCard(
+                            //   name: "Jane Smith",
+                            //   post: "Assistant Warden",
+                            //   location: "Block B",
+                            //   availability: "24/7 Available",
+                            //   onCall: () {},
+                            // ),
+                            // buildContactCard(
+                            //   name: "David Kumar",
+                            //   post: "Warden",
+                            //   location: "Block C",
+                            //   availability: "Day Shift",
+                            //   onCall: () {},
+                            // ),
+                            // buildContactCard(
+                            //   name: "Priya Sharma",
+                            //   post: "Deputy Warden",
+                            //   location: "Block D",
+                            //   availability: "Night Shift",
+                            //   onCall: () {},
+                            // ),
+                            // buildContactCard(
+                            //   name: "Arjun Mehta",
+                            //   post: "Senior Warden",
+                            //   location: "Block E",
+                            //   availability: "24/7 Available",
+                            //   onCall: () {},
+                            // ),
                           ],
                         ),
                               
                       const SizedBox(height: 16),
                               
-                      // Instructions Box
+                      // 🔹 Instructions Box
                       Container(
                         margin: const EdgeInsets.only(top: 15),
                         padding: const EdgeInsets.only(

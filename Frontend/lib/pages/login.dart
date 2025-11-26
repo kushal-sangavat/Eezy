@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:jklu_eezy/components/signin_login/auth_field.dart';
 import 'package:jklu_eezy/components/signin_login/auth_gradient.dart';
@@ -46,11 +47,13 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       String baseUrl;
-      if (Platform.isAndroid) {
-        baseUrl = "http://10.0.2.2:3000"; // Android emulator localhost
-      } else {
-        baseUrl = "http://localhost:3000"; // iOS simulator or desktop
-      }
+      // if (Platform.isAndroid) {
+      //   baseUrl = Platform.isAndroid ? "${dotenv.env['PROD_BACKEND_URL']}" : "${dotenv.env['BACKEND_URL']}"; // Android emulator localhost
+      // } else {
+      //   baseUrl = Platform.isIOS ? "${dotenv.env['PROD_BACKEND_URL']}" : "${dotenv.env['BACKEND_URL']}";
+      // }
+
+      baseUrl = "${dotenv.env['BACKEND_URL']}";
 
       final response = await http.post(
         Uri.parse('$baseUrl/api/auth/login'),

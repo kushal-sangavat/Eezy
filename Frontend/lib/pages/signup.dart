@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:jklu_eezy/components/signin_login/auth_field.dart';
 import 'package:jklu_eezy/components/signin_login/auth_gradient.dart';
@@ -43,11 +44,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
     String baseUrl;
     if (Platform.isAndroid) {
-      baseUrl = "http://10.0.2.2:3000";
+      baseUrl = Platform.isAndroid ? "${dotenv.env['PROD_BACKEND_URL']}" : "${dotenv.env['BACKEND_URL']}";
     } else if (Platform.isIOS) {
-      baseUrl = "http://127.0.0.1:3000";
+      baseUrl = Platform.isIOS ? "${dotenv.env['PROD_BACKEND_URL']}" : "${dotenv.env['BACKEND_URL']}";
     } else {
-      baseUrl = "http://localhost:3000";
+      baseUrl = Platform.isAndroid ? "${dotenv.env['PROD_BACKEND_URL']}" : "${dotenv.env['BACKEND_URL']}";
     }
     final url = Uri.parse("$baseUrl/api/auth/register");
 
