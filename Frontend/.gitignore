@@ -64,3 +64,4 @@ app.*.symbols
 .env.*
 
 Frontend/node_modules
+./gitignore
